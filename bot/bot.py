@@ -18,14 +18,16 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
     channel = bot.get_channel(int(testing_channel_id))
     if channel:
-        await channel.send(f'Deployed and Running')
+        await channel.send('Deployed and Running')
     else:
         raise ValueError(f"Channel ID {testing_channel_id} not found")
+
 
 @bot.event
 async def on_message(message):
@@ -34,6 +36,7 @@ async def on_message(message):
     if message.content.startswith('Hello'):
         await message.channel.send('Hello')
     await bot.process_commands(message)
+
 
 @bot.event
 async def setup_hook():
