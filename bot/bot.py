@@ -24,7 +24,7 @@ async def on_ready():
     print(f'Logged in as {bot.user}')
     channel = bot.get_channel(int(testing_channel_id))
     if channel:
-        await channel.send(f'Deployed and Running')
+        await channel.send('Deployed and Running')
     else:
         raise ValueError(f"Channel ID {testing_channel_id} not found")
 
