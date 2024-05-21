@@ -28,21 +28,29 @@ class Summarization(commands.Cog):
                 )
                 all_messages.append(message_details)
 
-        combined_message_text = f"Messages for {server_name}:\n" + " / ".join(all_messages)
+        combined_message_text = (
+            f"Messages for {server_name}:\n" + " / ".join(all_messages)
+        )
         combined_summary = await self.summarize_messages(combined_message_text)
 
         if combined_summary:
-            await ctx.send(f"Summary for all channels:\n{combined_summary}")
+            await ctx.send(
+                f"Summary for all channels:\n{combined_summary}"
+            )
         else:
-            await ctx.send("No messages to summarize for the past day in any channel.")
+            await ctx.send(
+                "No messages to summarize for the past day in any channel."
+            )
 
     async def summarize_messages(self, messages):
         response = openAIClient.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": f"Create a summary for every channel mention in the form: "
-                                            f"Channel name: bullet points:\n\n{messages}"}
+                {"role": "user", "content": (
+                    "Create a summary for every channel mention in the form: "
+                    "Channel name: bullet points:\n\n{messages}"
+                )}
             ],
             max_tokens=150,
             n=1,
