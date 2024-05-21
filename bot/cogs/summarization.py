@@ -23,7 +23,7 @@ class Summarization(commands.Cog):
         for channel in ctx.guild.text_channels:
             async for message in channel.history(limit=100):
                 message_details = (
-                    f"[In {channel.name} {message.author.display_name} sent this at "
+                    f"[In {channel.name} {message.author.display_name} "
                     f"{message.created_at.isoformat()}: {message.content}]"
                 )
                 all_messages.append(message_details)
