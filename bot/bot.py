@@ -41,5 +41,6 @@ async def on_message(message):
 @bot.event
 async def setup_hook():
     await bot.load_extension("cogs.summarization")
+    await bot.load_extension("cogs.watercooler")
 
 bot.run(bot_token)
