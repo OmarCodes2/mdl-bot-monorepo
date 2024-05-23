@@ -18,19 +18,20 @@ class Watercooler(commands.Cog):
         script_dir = os.path.dirname(__file__)
         file_path = os.path.join(script_dir, file_name)
         with open(file_path, "r") as file:
-            topics = [line.strip() for line in file if line.strip()]
+            topics = [line.strip().split('|') for line in file if line.strip()]
         return topics
 
     @commands.command(name='watercooler')
     async def watercooler(self, ctx):
-        topic = random.choice(self.topics)
+        topic_pair = random.choice(self.topics)
+        question, short_topic = topic_pair[0], topic_pair[1]
         embed = discord.Embed(
             title="Question of the Week",
-            description=topic,
+            description=question.strip(),
             color=discord.Color.blue()
         )
 
-        gif_url = self.get_gif_url(topic)
+        gif_url = self.get_gif_url(short_topic.strip())
         if gif_url:
             embed.set_image(url=gif_url)
         else:
@@ -46,7 +47,6 @@ class Watercooler(commands.Cog):
         except ApiException as e:
             print(f"Exception when calling Giphy API: {e}")
         return None
-
 
 async def setup(bot):
     await bot.add_cog(Watercooler(bot))
