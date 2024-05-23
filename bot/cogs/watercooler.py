@@ -2,6 +2,7 @@ import random
 import discord
 from discord.ext import commands
 
+
 class Watercooler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -56,7 +57,6 @@ class Watercooler(commands.Cog):
             "What's your favorite way to volunteer or give back?",
             "What's the most interesting documentary you've seen?",
             "What's your favorite way to spend a day off?",
-            "If you could be any character from a book or movie, who would you be?",
             "What's your favorite outdoor activity?",
             "What's your favorite way to unwind?",
             "If you could invent something, what would it be?",
@@ -122,7 +122,13 @@ class Watercooler(commands.Cog):
             description=topic,
             color=discord.Color.blue()
         )
-        embed.set_image(url="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGV0c2pqb3N5aGpuc3U1NHRsNmRkcXJoamxrMThidHRuNjZvODZ3ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SeysxkSfenHY4/giphy.gif")
+        embed.set_image(
+            url=(
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGV0c"
+                "2pqb3N5aGpuc3U1NHRsNmRkcXJoamxrMThidHRuNjZvODZ3ciZlcD12MV9p"
+                "bnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SeysxkSfenHY4/giphy.gif"
+            )
+        )
         await ctx.send(embed=embed)
 
 async def setup(bot):
