@@ -5,6 +5,7 @@ from discord.ext import commands
 from giphy_client.rest import ApiException
 import giphy_client
 
+
 class Watercooler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -41,12 +42,15 @@ class Watercooler(commands.Cog):
 
     def get_gif_url(self, query):
         try:
-            response = self.giphy_instance.gifs_search_get(self.giphy_api_key, query, limit=1)
+            response = self.giphy_instance.gifs_search_get(
+                self.giphy_api_key, query, limit=1
+            )
             if response.data:
                 return response.data[0].images.fixed_height.url
         except ApiException as e:
             print(f"Exception when calling Giphy API: {e}")
         return None
+
 
 async def setup(bot):
     await bot.add_cog(Watercooler(bot))
