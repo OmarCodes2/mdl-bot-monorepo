@@ -1,14 +1,18 @@
+import os
 import random
 import discord
 from discord.ext import commands
-
 
 class Watercooler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.topics = self.load_topics_from_file("questions.txt")
 
-    def load_topics_from_file(self, file_path):
+    def load_topics_from_file(self, file_name):
+
+        script_dir = os.path.dirname(__file__)
+
+        file_path = os.path.join(script_dir, file_name)
         with open(file_path, "r") as file:
             topics = [line.strip() for line in file if line.strip()]
         return topics
