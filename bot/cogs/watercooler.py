@@ -114,7 +114,6 @@ class Watercooler(commands.Cog):
             "What's your favorite kind of cookie?"
         ]
 
-
     @commands.command(name='watercooler')
     async def watercooler(self, ctx):
         topic = random.choice(self.topics)
@@ -123,6 +122,7 @@ class Watercooler(commands.Cog):
             description=topic,
             color=discord.Color.blue()
         )
+        embed.set_image(url="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGV0c2pqb3N5aGpuc3U1NHRsNmRkcXJoamxrMThidHRuNjZvODZ3ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SeysxkSfenHY4/giphy.gif")
         await ctx.send(embed=embed)
 
 async def setup(bot):
