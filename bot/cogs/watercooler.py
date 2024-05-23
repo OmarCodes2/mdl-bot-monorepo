@@ -119,7 +119,7 @@ class Watercooler(commands.Cog):
     async def watercooler(self, ctx):
         topic = random.choice(self.topics)
         embed = discord.Embed(
-            title="Watercooler Topic",
+            title="Question of the Week",
             description=topic,
             color=discord.Color.blue()
         )
