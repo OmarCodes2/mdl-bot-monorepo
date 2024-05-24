@@ -51,7 +51,9 @@ class Praise(commands.Cog):
             embed.add_field(name="Reason", value=reason, inline=False)
             embed.set_footer(
                 text=f"Praised by {ctx.author.display_name}",
-                icon_url=ctx.author.avatar.url if ctx.author.avatar else ctx.author.default_avatar.url
+                icon_url=ctx.author.avatar.url
+                if ctx.author.avatar
+                else ctx.author.default_avatar.url
             )
 
             clap_gif_url = self.get_random_clap_gif()
@@ -62,7 +64,8 @@ class Praise(commands.Cog):
         except Exception as e:
             print(f"Error in praise command: {e}")
             await ctx.send(
-                "There was an error trying to praise the members. Please try again."
+                "There was an error trying to praise the members. "
+                "Please try again."
             )
 
 
