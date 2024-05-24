@@ -1,35 +1,21 @@
 import discord
-import requests
 import random
 import os
 from discord.ext import commands
 
-GIPHY_SEARCH_URL = 'https://api.giphy.com/v1/gifs/search'
-
 class Praise(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.clap_gifs = self.load_gif_links('clap_gifs.txt')
+
+    def load_gif_links(self, file_name):
+        script_dir = os.path.dirname(__file__)
+        file_path = os.path.join(script_dir, file_name)
+        with open(file_path, "r") as file:
+            return [line.strip() for line in file if line.strip()]
 
     def get_random_clap_gif(self):
-        giphy_api_key = os.getenv('GIPHY_API_KEY')
-        if not giphy_api_key:
-            return None
-
-        params = {
-            'api_key': giphy_api_key,
-            'q': 'clapping',
-            'limit': 50,
-            'offset': 0,
-            'rating': 'G',
-            'lang': 'en'
-        }
-        response = requests.get(GIPHY_SEARCH_URL, params=params)
-        if response.status_code == 200:
-            data = response.json()
-            if data['data']:
-                gif = random.choice(data['data'])
-                return gif['images']['original']['url']
-        return None
+        return random.choice(self.clap_gifs)
 
     @commands.command(name='praise')
     async def praise(self, ctx, *, message: str):
@@ -62,15 +48,8 @@ class Praise(commands.Cog):
             embed.add_field(name="Reason", value=reason, inline=False)
             embed.set_footer(text=f"Praised by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else ctx.author.default_avatar.url)
 
-            if len(members) == 1:
-                member_avatar_url = members[0].avatar.url if members[0].avatar else members[0].default_avatar.url
-                embed.set_thumbnail(url=member_avatar_url)
-            else:
-                clap_gif_url = self.get_random_clap_gif()
-                if clap_gif_url:
-                    embed.set_image(url=clap_gif_url)
-                else:
-                    embed.set_thumbnail(url=ctx.guild.icon.url if ctx.guild.icon else None)
+            clap_gif_url = self.get_random_clap_gif()
+            embed.set_image(url=clap_gif_url)
 
             await ctx.send(embed=embed)
             await ctx.message.delete()
@@ -80,3 +59,5 @@ class Praise(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(Praise(bot))
+
+# Ensure the bot's token and other necessary configurations are set here
