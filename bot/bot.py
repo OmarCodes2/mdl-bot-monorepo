@@ -42,5 +42,6 @@ async def on_message(message):
 async def setup_hook():
     await bot.load_extension("cogs.summarization")
     await bot.load_extension("cogs.watercooler")
+    await bot.load_extension("cogs.praise")
 
 bot.run(bot_token)
