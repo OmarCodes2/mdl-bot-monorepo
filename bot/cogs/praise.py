@@ -3,6 +3,7 @@ import random
 import os
 from discord.ext import commands
 
+
 class Praise(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -23,7 +24,7 @@ class Praise(commands.Cog):
             members = []
             reason = ""
             words = message.split()
-            
+
             for word in words:
                 if word.startswith("<@") and word.endswith(">"):
                     user_id = int(word[2:-1].replace("!", ""))
@@ -32,11 +33,13 @@ class Praise(commands.Cog):
                         members.append(member)
                 else:
                     reason += word + " "
-            
+
             reason = reason.strip()
 
             if not members:
-                await ctx.send("You need to mention at least one member to praise.")
+                await ctx.send(
+                    "You need to mention at least one member to praise."
+                )
                 return
 
             mentions = ", ".join([member.mention for member in members])
@@ -46,7 +49,10 @@ class Praise(commands.Cog):
                 color=discord.Color.green()
             )
             embed.add_field(name="Reason", value=reason, inline=False)
-            embed.set_footer(text=f"Praised by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else ctx.author.default_avatar.url)
+            embed.set_footer(
+                text=f"Praised by {ctx.author.display_name}",
+                icon_url=ctx.author.avatar.url if ctx.author.avatar else ctx.author.default_avatar.url
+            )
 
             clap_gif_url = self.get_random_clap_gif()
             embed.set_image(url=clap_gif_url)
@@ -55,9 +61,10 @@ class Praise(commands.Cog):
             await ctx.message.delete()
         except Exception as e:
             print(f"Error in praise command: {e}")
-            await ctx.send("There was an error trying to praise the members. Please try again.")
+            await ctx.send(
+                "There was an error trying to praise the members. Please try again."
+            )
+
 
 async def setup(bot):
     await bot.add_cog(Praise(bot))
-
-# Ensure the bot's token and other necessary configurations are set here
