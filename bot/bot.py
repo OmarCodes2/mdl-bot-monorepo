@@ -45,5 +45,6 @@ async def setup_hook():
     await bot.load_extension("cogs.watercooler")
     await bot.load_extension("cogs.praise")
     await bot.load_extension("cogs.birthday")
+    await bot.load_extension("cogs.welcome")
 
 bot.run(bot_token)

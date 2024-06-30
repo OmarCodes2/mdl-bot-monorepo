@@ -43,26 +43,29 @@ class Birthday(commands.Cog):
         return random.choice(self.birthday_gifs)
 
     @commands.command(name='bday')
-    async def set_birthday(self, ctx, date: str, member: discord.Member):
-        self.birthdays[str(member.id)] = date
+    async def set_birthday(self, ctx, date: str, user_id: int):
+        self.birthdays[str(user_id)] = date
         self.save_birthdays()
-        await ctx.send(f"Birthday for {member.mention} set to {date}")
+        await ctx.send(f"Birthday for user with ID {user_id} set to {date}")
 
     @tasks.loop(minutes=1)
     async def check_birthdays(self):
         now = datetime.now(pytz.timezone('America/New_York'))
         current_time = now.strftime("%H:%M")
-        if current_time == "10:00":
+        if current_time == "09:00":
             today = now.strftime("%m-%d")
-            for member_id, bday in self.birthdays.items():
+            for user_id, bday in self.birthdays.items():
                 if bday == today:
-                    member = self.bot.get_user(int(member_id))
+                    member = self.bot.get_user(int(user_id))
                     if member:
-                        channel = discord.utils.get(self.bot.get_all_channels(), name='general')
+                        channel = self.bot.get_channel(1256934233146916915)
                         if channel:
                             gif_url = self.get_random_birthday_gif()
-                            await channel.send(f"Happy Birthday {member.mention}!", embed=self.create_birthday_embed(member, gif_url))
-
+                            await channel.send(f"Happy Birthday <@{user_id}>!", embed=self.create_birthday_embed(member, gif_url))
+                            confirmation_channel = self.bot.get_channel(1242259751879049336)
+                            if confirmation_channel:
+                                await confirmation_channel.send(f"Confirmation: Birthday message sent for <@{user_id}>")
+    
     def create_birthday_embed(self, member, gif_url):
         embed = discord.Embed(
             title=":tada: Happy Birthday! :tada:",
