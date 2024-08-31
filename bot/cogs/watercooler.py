@@ -35,8 +35,8 @@ class Watercooler(commands.Cog):
 
     @tasks.loop(minutes=1)
     async def check_time(self):
-        now = datetime.now(pytz.timezone('America/New_York')).time()
-        if now >= self.target_time and (now <= (datetime.combine(datetime.today(), self.target_time) + timedelta(minutes=1)).time()):
+        now = datetime.now(pytz.timezone('America/New_York'))
+        if now.weekday() == 0 and now.time() >= self.target_time and (now.time() <= (datetime.combine(now, self.target_time) + timedelta(minutes=1)).time()):
             await self.send_watercooler_question()
 
     async def send_watercooler_question(self):
