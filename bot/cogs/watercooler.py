@@ -16,7 +16,7 @@ class Watercooler(commands.Cog):
         self.giphy_instance = giphy_client.DefaultApi()
         self.topics = self.load_topics_from_file("questions.txt")
         self.channel_id = 1233797948597342341  # Change to your channel ID
-        self.target_time = time(20, 00, 0)  # Set target time to 7:20 PM
+        self.target_time = time(20, 00, 0)  # Set target time to 8:00 PM
         self.check_time.start()
 
     def load_topics_from_file(self, file_name):
@@ -26,6 +26,13 @@ class Watercooler(commands.Cog):
             topics = [line.strip().split('|') for line in file if line.strip()]
         return topics
 
+    def save_topics_to_file(self, file_name, topics):
+        script_dir = os.path.dirname(__file__)
+        file_path = os.path.join(script_dir, file_name)
+        with open(file_path, "w") as file:
+            for topic_pair in topics:
+                file.write(f"{topic_pair[0]}|{topic_pair[1]}\n")
+
     @tasks.loop(minutes=1)
     async def check_time(self):
         now = datetime.now(pytz.timezone('America/New_York')).time()
@@ -33,8 +40,13 @@ class Watercooler(commands.Cog):
             await self.send_watercooler_question()
 
     async def send_watercooler_question(self):
-        topic_pair = random.choice(self.topics)
+        if not self.topics:
+            print("No more topics available.")
+            return
+
+        topic_pair = self.topics.pop(0)
         question, short_topic = topic_pair[0], topic_pair[1]
+
         embed = discord.Embed(
             title="Question of the Day",
             description=question.strip(),
@@ -50,6 +62,8 @@ class Watercooler(commands.Cog):
         channel = self.bot.get_channel(self.channel_id)
         if channel:
             await channel.send(embed=embed)
+
+        self.save_topics_to_file("questions.txt", self.topics)
 
     def get_gif_url(self, query):
         try:
