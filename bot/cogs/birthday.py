@@ -52,7 +52,7 @@ class Birthday(commands.Cog):
     async def check_birthdays(self):
         now = datetime.now(pytz.timezone('America/New_York'))
         current_time = now.strftime("%H:%M")
-        if current_time == "09:00":
+        if current_time == "09:23":
             today = now.strftime("%m-%d")
             for user_id, bday in self.birthdays.items():
                 if bday == today:
